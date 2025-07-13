@@ -1,0 +1,19 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 仮想環境
+env
+venv
+.env
+.venv
+
+# 出力ファイル
+output/
+
+# ログファイル
+log/*.log
+
+# 検証用ファイル
+*.ipynb
