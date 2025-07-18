@@ -9,6 +9,9 @@ import pandas as pd
 import requests
 
 
+# 出力先
+data_dir = Path(__file__).parents[1] / 'data'
+
 # requests用パラメータ
 headers = {'User-Agent': ''}
 timeout_sec = 60
@@ -81,7 +84,7 @@ def download_y(year, file_url: str):
 
 
     # csvの出力
-    filepath = Path(f'data/y/{year}/{update}.csv')
+    filepath = data_dir / f'y/{year}/{update}.csv'
     if not filepath.parent.is_dir():
         filepath.parent.mkdir()
 

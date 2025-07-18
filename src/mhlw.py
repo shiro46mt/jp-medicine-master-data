@@ -7,6 +7,9 @@ import pandas as pd
 import requests
 
 
+# 出力先
+data_dir = Path(__file__).parents[1] / 'data'
+
 # requests用パラメータ
 headers = {'User-Agent': ''}
 timeout_sec = 60
@@ -79,7 +82,7 @@ def download_price(year, file_urls: list[str]):
     assert set(df['区分'].unique()) == set(['内用薬', '注射薬', '外用薬', '歯科用薬剤'])
 
     # csvの出力
-    filepath = Path(f'data/mhlw_price/{year}/{max_update}.csv')
+    filepath = data_dir / f'mhlw_price/{year}/{max_update}.csv'
     if not filepath.parent.is_dir():
         filepath.parent.mkdir()
     df.to_csv(filepath, index=False, encoding='utf8')
@@ -108,7 +111,7 @@ def download_ge(year, file_urls: list[str]):
     # バリデーション
 
     # csvの出力
-    filepath = Path(f'data/mhlw_ge/{year}/{mob.group(2)}.csv')
+    filepath = data_dir / f'mhlw_ge/{year}/{mob.group(2)}.csv'
     if not filepath.parent.is_dir():
         filepath.parent.mkdir()
     df.to_csv(filepath, index=False, encoding='utf8')
