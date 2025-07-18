@@ -8,6 +8,9 @@ from bs4 import BeautifulSoup
 import requests
 
 
+# 出力先
+data_dir = Path(__file__).parents[1] / 'data'
+
 # requests用パラメータ
 headers = {'User-Agent': ''}
 timeout_sec = 60
@@ -49,10 +52,10 @@ def download_hot(file_url: str):
 
             if mob_13:
                 update = mob_13.group(1)
-                target_dir = Path('data/hot13')
+                target_dir = data_dir / 'hot13'
             elif mob_9:
                 update = mob_9.group(1)
-                target_dir = Path('data/hot9')
+                target_dir = data_dir / 'hot9'
             else:
                 continue
 
