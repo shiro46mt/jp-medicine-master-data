@@ -11,11 +11,11 @@ cataog = {
     'data': {},
 }
 
-data_subdirs = data_dir.glob('*')
+data_subdirs = sorted(data_dir.glob('*'))
 for d in data_subdirs:
     cataog['data'][d.name] = []
 
-    files = d.glob('**/*.csv')
+    files = sorted(d.glob('**/*.csv'))
     for f in files:
         cataog['data'][d.name].append(f.relative_to(d).as_posix())
 
