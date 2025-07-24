@@ -10,14 +10,18 @@ import requests
 
 
 # 出力先
-data_dir = Path(__file__).parents[1] / 'data'
+DATA_DIR = Path(__file__).parents[1] / 'data'
 
-# requests用パラメータ
-headers = {'User-Agent': ''}
-timeout_sec = 60
+# バリデーション用
+LOWER_BOUND = 0.8
+UPPER_BOUND = 1.2
 
 
 def get_file_urls():
+    # requests用パラメータ
+    headers = {'User-Agent': ''}
+    timeout_sec = 60
+
     # トップページ
     top_url = 'https://shinryohoshu.mhlw.go.jp/shinryohoshu/downloadMenu/'
     html = requests.get(top_url, timeout=timeout_sec, headers=headers)
@@ -81,10 +85,13 @@ def download_y(year, file_url: str):
                 break
 
     # バリデーション
-
+    filepath = max(DATA_DIR.glob(f'y/*/*.csv'))
+    df_prev = pd.read_csv(filepath, encoding='utf8')
+    assert len(df_prev) * LOWER_BOUND <= len(df) <= len(df_prev) * UPPER_BOUND
+    assert len(df.columns) == len(df_prev.columns)
 
     # csvの出力
-    filepath = data_dir / f'y/{year}/{update}.csv'
+    filepath = DATA_DIR / f'y/{year}/{update}.csv'
     if not filepath.parent.is_dir():
         filepath.parent.mkdir()
 
