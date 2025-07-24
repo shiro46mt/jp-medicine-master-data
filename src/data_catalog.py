@@ -13,11 +13,12 @@ cataog = {
 
 data_subdirs = sorted(data_dir.glob('*'))
 for d in data_subdirs:
-    cataog['data'][d.name] = []
+    if d.is_dir():
+        cataog['data'][d.name] = []
 
-    files = sorted(d.glob('**/*.csv'))
-    for f in files:
-        cataog['data'][d.name].append(f.relative_to(d).as_posix())
+        files = sorted(d.glob('**/*.csv'))
+        for f in files:
+            cataog['data'][d.name].append(f.relative_to(d).as_posix())
 
 filepath = data_dir / 'data_catalog.json'
 with open(filepath, 'w', newline='', encoding='utf8') as f:
