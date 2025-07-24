@@ -9,17 +9,21 @@ import requests
 
 
 # 出力先
-data_dir = Path(__file__).parents[1] / 'data'
+DATA_DIR = Path(__file__).parents[1] / 'data'
 
-# requests用パラメータ
-headers = {'User-Agent': ''}
-timeout_sec = 60
+# バリデーション用
+LOWER_BOUND = 0.8
+UPPER_BOUND = 1.2
 
 # # OpenSSLのデフォルトから、より幅広い暗号スイートを許可する設定に変更
 # requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH'
 
 
 def get_file_url():
+    # requests用パラメータ
+    headers = {'User-Agent': ''}
+    timeout_sec = 60
+
     # トップページ
     top_url = 'https://www2.medis.or.jp/hcode/'.replace('https:', 'http:')
     html = requests.get(top_url, timeout=timeout_sec, headers=headers)
@@ -52,10 +56,10 @@ def download_hot(file_url: str):
 
             if mob_13:
                 update = mob_13.group(1)
-                target_dir = data_dir / 'hot13'
+                target_dir = DATA_DIR / 'hot13'
             elif mob_9:
                 update = mob_9.group(1)
-                target_dir = data_dir / 'hot9'
+                target_dir = DATA_DIR / 'hot9'
             else:
                 continue
 

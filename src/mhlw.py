@@ -8,14 +8,18 @@ import requests
 
 
 # 出力先
-data_dir = Path(__file__).parents[1] / 'data'
+DATA_DIR = Path(__file__).parents[1] / 'data'
 
-# requests用パラメータ
-headers = {'User-Agent': ''}
-timeout_sec = 60
+# バリデーション用
+LOWER_BOUND = 0.8
+UPPER_BOUND = 1.2
 
 
 def get_file_urls():
+    # requests用パラメータ
+    headers = {'User-Agent': ''}
+    timeout_sec = 60
+
     # 医療保険が適用される医薬品について
     top_url = 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000078916.html'
     html = requests.get(top_url, timeout=timeout_sec, headers=headers)
@@ -79,10 +83,14 @@ def download_price(year, file_urls: list[str]):
     df = df.rename(columns={'Unnamed: 4': '日本薬局方', 'Unnamed: 5': '麻薬', 'Unnamed: 6': '業者名追記'})
 
     # バリデーション
+    filepath = max(DATA_DIR.glob(f'mhlw_price/*/*.csv'))
+    df_prev = pd.read_csv(filepath, encoding='utf8')
+    assert len(df_prev) * LOWER_BOUND <= len(df) <= len(df_prev) * UPPER_BOUND
+    assert list(df.columns) == list(df_prev.columns)
     assert set(df['区分'].unique()) == set(['内用薬', '注射薬', '外用薬', '歯科用薬剤'])
 
     # csvの出力
-    filepath = data_dir / f'mhlw_price/{year}/{max_update}.csv'
+    filepath = DATA_DIR / f'mhlw_price/{year}/{max_update}.csv'
     if not filepath.parent.is_dir():
         filepath.parent.mkdir()
     df.to_csv(filepath, index=False, encoding='utf8')
@@ -109,9 +117,13 @@ def download_ge(year, file_urls: list[str]):
     df = df.rename(columns={'収載年月日(YYYYMMDD)\n【例】\n2016年4月1日\n(20160401)': '収載年月日'})
 
     # バリデーション
+    filepath = max(DATA_DIR.glob(f'mhlw_ge/*/*.csv'))
+    df_prev = pd.read_csv(filepath, encoding='utf8')
+    assert len(df_prev) * LOWER_BOUND <= len(df) <= len(df_prev) * UPPER_BOUND
+    assert list(df.columns) == list(df_prev.columns)
 
     # csvの出力
-    filepath = data_dir / f'mhlw_ge/{year}/{mob.group(2)}.csv'
+    filepath = DATA_DIR / f'mhlw_ge/{year}/{mob.group(2)}.csv'
     if not filepath.parent.is_dir():
         filepath.parent.mkdir()
     df.to_csv(filepath, index=False, encoding='utf8')
