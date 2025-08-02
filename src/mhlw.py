@@ -58,7 +58,7 @@ def download_price(year, file_urls: list[str]):
     Args:
         file_urls:
     """
-    pattern = re.compile(r"(tp(\d{8})-01_0?[1234].xlsx?)")
+    pattern = re.compile(r"(tp(\d{8})-(01_)?0?[1234].xlsx?)")
     dfs = []
     max_update = '00000000'
 
@@ -102,7 +102,7 @@ def download_ge(year, file_urls: list[str]):
     Args:
         file_urls:
     """
-    pattern = re.compile(r"(tp(\d{8})-01_0?5.xlsx?)")
+    pattern = re.compile(r"(tp(\d{8})-(01_)?0?5.xlsx?)")
 
     file_url = max([f for f in file_urls if pattern.search(f)])
 
