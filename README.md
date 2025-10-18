@@ -13,6 +13,8 @@
     * [HOT13](https://github.com/shiro46mt/jp-medicine-master-data/tree/main/data/hot13)
     * [HOT9](https://github.com/shiro46mt/jp-medicine-master-data/tree/main/data/hot9)
 
+[こちら](https://shiro46mt.github.io/jp-medicine-master-data/)からもダウンロードできます。
+
 ## データソース
 
 ### 薬価基準収載品目リスト / 後発医薬品に関する情報
