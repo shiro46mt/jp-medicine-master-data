@@ -9,9 +9,6 @@
 * [薬価基準収載品目リスト](https://github.com/shiro46mt/jp-medicine-master-data/tree/main/data/mhlw_price)
 * [後発医薬品に関する情報](https://github.com/shiro46mt/jp-medicine-master-data/tree/main/data/mhlw_ge)
 * [レセプト電算処理システム 医薬品マスター](https://github.com/shiro46mt/jp-medicine-master-data/tree/main/data/y)
-* 医薬品HOTコードマスター
-    * [HOT13](https://github.com/shiro46mt/jp-medicine-master-data/tree/main/data/hot13)
-    * [HOT9](https://github.com/shiro46mt/jp-medicine-master-data/tree/main/data/hot9)
 
 [こちら](https://shiro46mt.github.io/jp-medicine-master-data/)からもダウンロードできます。
 

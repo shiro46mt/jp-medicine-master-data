@@ -26,15 +26,16 @@ async function fetchCatalogAndGenerateLinks() {
             const categoryId = item.id;
             const categoryName = item.name;
             const files = item.files;
+            const distribution = item.distribution;
 
-            const categoryDiv = document.createElement('div');
-            categoryDiv.className = 'category';
+            if (files && files.length > 0 && distribution) {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'category';
 
-            const title = document.createElement('h2');
-            title.textContent = `${categoryName}`;
-            categoryDiv.appendChild(title);
+                const title = document.createElement('h2');
+                title.textContent = `${categoryName}`;
+                categoryDiv.appendChild(title);
 
-            if (files && files.length > 0) {
                 const downloadDiv = document.createElement('div');
                 downloadDiv.className = 'download-controls';
 
@@ -113,13 +114,8 @@ async function fetchCatalogAndGenerateLinks() {
                 downloadDiv.appendChild(select);
                 downloadDiv.appendChild(button);
                 categoryDiv.appendChild(downloadDiv);
-            } else {
-                const noFileText = document.createElement('p');
-                noFileText.className = 'no-file';
-                noFileText.textContent = '利用可能なファイルがありません。';
-                categoryDiv.appendChild(noFileText);
+                container.appendChild(categoryDiv);
             }
-            container.appendChild(categoryDiv);
         }
     } catch (error) {
         console.error('エラー:', error);
