@@ -2,26 +2,31 @@
     "hot9": {
         "id": "hot9",
         "name": "医薬品HOTコード HOT9",
-        "short_name": "HOT9"
+        "short_name": "HOT9",
+        "distribution": false
     },
     "hot13": {
         "id": "hot13",
         "name": "医薬品HOTコード HOT13",
-        "short_name": "HOT13"
+        "short_name": "HOT13",
+        "distribution": false
     },
     "mhlw_ge": {
         "id": "mhlw_ge",
         "name": "後発医薬品に関する情報",
-        "short_name": "後発情報"
+        "short_name": "後発情報",
+        "distribution": true
     },
     "mhlw_price": {
         "id": "mhlw_price",
         "name": "薬価基準収載品目リスト",
-        "short_name": "薬価リスト"
+        "short_name": "薬価リスト",
+        "distribution": true
     },
     "y": {
         "id": "y",
         "name": "レセプト電算処理システム 医薬品マスター",
-        "short_name": "レセ電マスタ"
+        "short_name": "レセ電マスタ",
+        "distribution": true
     }
 }
