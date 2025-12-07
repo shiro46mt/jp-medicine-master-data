@@ -22,13 +22,14 @@ async function fetchCatalogAndGenerateLinks() {
         }
 
         const data = catalog.data;
+        const distribution_all = (window.location.search.includes("hot"));
         for (const item of data) {
             const categoryId = item.id;
             const categoryName = item.name;
             const files = item.files;
             const distribution = item.distribution;
 
-            if (files && files.length > 0 && distribution) {
+            if (files && files.length > 0 && (distribution || distribution_all)) {
                 const categoryDiv = document.createElement('div');
                 categoryDiv.className = 'category';
 
