@@ -33,10 +33,7 @@ jobs:
 
       - name: Run script
         run: |
-          python src/mhlw.py
-          python src/y.py
-          python src/hot.py
-          python src/data_catalog.py
+          python src/main.py
 
       - name: Commit & Push
         run: |

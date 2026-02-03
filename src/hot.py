@@ -69,6 +69,8 @@ def download_hot(file_url: str):
 
             # csvの出力
             filepath = target_dir / f'{update}.csv'
+            if not filepath.parent.is_dir():
+                filepath.parent.mkdir(parents=True)
             filepath.write_text(csv_content, encoding='utf8', newline='')
 
 
