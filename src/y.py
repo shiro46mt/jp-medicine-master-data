@@ -85,15 +85,16 @@ def download_y(year, file_url: str):
                 break
 
     # バリデーション
-    filepath = max(DATA_DIR.glob(f'y/*/*.csv'))
-    df_prev = pd.read_csv(filepath, encoding='utf8')
-    assert len(df_prev) * LOWER_BOUND <= len(df) <= len(df_prev) * UPPER_BOUND
-    assert len(df.columns) == len(df_prev.columns)
+    if (DATA_DIR / 'y').is_dir():
+        filepath = max(DATA_DIR.glob('y/*/*.csv'))
+        df_prev = pd.read_csv(filepath, encoding='utf8')
+        assert len(df_prev) * LOWER_BOUND <= len(df) <= len(df_prev) * UPPER_BOUND
+        assert len(df.columns) == len(df_prev.columns)
 
     # csvの出力
     filepath = DATA_DIR / f'y/{year}/{update}.csv'
     if not filepath.parent.is_dir():
-        filepath.parent.mkdir()
+        filepath.parent.mkdir(parents=True)
 
     ## ヘッダ行
     filepath_header = Path(__file__).parent / 'y_header.csv'

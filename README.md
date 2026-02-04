@@ -30,3 +30,11 @@
 
 
 > 2024年度以前のデータの一部に[国立国会図書館インターネット資料収集保存事業](https://warp.da.ndl.go.jp)によるウェブアーカイブを参照。
+
+## 開発者向け
+
+`main`ブランチはdataフォルダが重いので `develop`ブランチのみcloneすることを推奨します。
+
+```
+git clone https://github.com/shiro46mt/jp-medicine-master-data.git -b develop --single-branch
+```
