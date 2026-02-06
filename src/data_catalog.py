@@ -19,20 +19,19 @@ def main():
     }
 
     # csvファイルの一覧を取得
-    data_subdirs = sorted(DATA_DIR.glob('*'))
-    for d in data_subdirs:
-        if d.is_dir():
+    for dirname, info_dict in catalog_info.items():
+        data_subdir = DATA_DIR / dirname
+        if data_subdir.is_dir():
             # カタログアイテムの初期化
-            item = catalog_info.get(d.name, {})
-            item['files'] = []
+            info_dict['files'] = []
 
             # ファイルの一覧のリスト化
-            files = sorted(d.glob('**/*.csv'))
+            files = sorted(data_subdir.glob('**/*.csv'))
             for f in files:
-                item['files'].append(f.relative_to(d).as_posix())
+                info_dict['files'].append(f.relative_to(data_subdir).as_posix())
 
             # カタログアイテムの追加
-            catalog['data'].append(item)
+            catalog['data'].append(info_dict)
 
     # 変更の有無の確認
     filepath = DATA_DIR / 'data_catalog.json'

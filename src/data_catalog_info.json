@@ -1,4 +1,22 @@
 {
+    "mhlw_price": {
+        "id": "mhlw_price",
+        "name": "薬価基準収載品目リスト",
+        "short_name": "薬価リスト",
+        "distribution": true
+    },
+    "mhlw_ge": {
+        "id": "mhlw_ge",
+        "name": "後発医薬品に関する情報",
+        "short_name": "後発情報",
+        "distribution": true
+    },
+    "y": {
+        "id": "y",
+        "name": "レセプト電算処理システム 医薬品マスター",
+        "short_name": "レセ電マスタ",
+        "distribution": true
+    },
     "hot9": {
         "id": "hot9",
         "name": "医薬品HOTコード HOT9",
@@ -10,23 +28,5 @@
         "name": "医薬品HOTコード HOT13",
         "short_name": "HOT13",
         "distribution": false
-    },
-    "mhlw_ge": {
-        "id": "mhlw_ge",
-        "name": "後発医薬品に関する情報",
-        "short_name": "後発情報",
-        "distribution": true
-    },
-    "mhlw_price": {
-        "id": "mhlw_price",
-        "name": "薬価基準収載品目リスト",
-        "short_name": "薬価リスト",
-        "distribution": true
-    },
-    "y": {
-        "id": "y",
-        "name": "レセプト電算処理システム 医薬品マスター",
-        "short_name": "レセ電マスタ",
-        "distribution": true
     }
 }
