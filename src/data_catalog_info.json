@@ -11,6 +11,12 @@
         "short_name": "後発情報",
         "distribution": true
     },
+    "mhlw_ippanmeishohou": {
+        "id": "mhlw_ippanmeishohou",
+        "name": "処方箋に記載する一般名処方の標準的な記載（一般名処方マスタ）",
+        "short_name": "一般名処方マスタ",
+        "distribution": true
+    },
     "y": {
         "id": "y",
         "name": "レセプト電算処理システム 医薬品マスター",

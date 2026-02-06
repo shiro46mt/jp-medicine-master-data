@@ -8,13 +8,14 @@
 
 * [薬価基準収載品目リスト](https://github.com/shiro46mt/jp-medicine-master-data/tree/main/data/mhlw_price)
 * [後発医薬品に関する情報](https://github.com/shiro46mt/jp-medicine-master-data/tree/main/data/mhlw_ge)
+* [処方箋に記載する一般名処方の標準的な記載（一般名処方マスタ）](https://github.com/shiro46mt/jp-medicine-master-data/tree/main/data/mhlw_ippanmeishohou)
 * [レセプト電算処理システム 医薬品マスター](https://github.com/shiro46mt/jp-medicine-master-data/tree/main/data/y)
 
 [こちら](https://shiro46mt.github.io/jp-medicine-master-data/)からもダウンロードできます。
 
 ## データソース
 
-### 薬価基準収載品目リスト / 後発医薬品に関する情報
+### 薬価基準収載品目リスト / 後発医薬品に関する情報 / 処方箋に記載する一般名処方の標準的な記載（一般名処方マスタ）
 
 * [医療保険が適用される医薬品について｜厚生労働省](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000078916.html)
 
