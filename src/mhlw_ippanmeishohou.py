@@ -46,23 +46,14 @@ def get_file_urls():
         soup = BeautifulSoup(html.content, 'html.parser')
 
         # ダウンロード用リンクの取得
-        file_url_tag = soup.select_one('#contents .ico-excel a')
-        file_urls[year] = urljoin(page_url, file_url_tag.attrs['href'])
+        file_url_tags = soup.select('#contents .ico-excel a')
+        file_urls[year] = [urljoin(page_url, tag.attrs['href']) for tag in file_url_tags]
 
     return file_urls
 
 
-def download_ippanmeishohou(year, file_url: str):
-    """厚労省HPから、一般名処方マスタをダウンロードし、csv形式 (UTF-8) で保存する。
-
-    Args:
-        file_url:
-    """
-    pattern = re.compile(r"ippanmeishohoumaster_(\d{6}).xlsx")
-
-    # ファイル名の確認
-    mob = pattern.search(file_url)
-
+def read_transform(file_url: str) -> pd.DataFrame:
+    """一般名処方マスタの全体シートと例外コード品目シートを突合して、一般名コードをキーとした1つのデータフレームに変換する。"""
     # 全体シートの読み込み
     df_all = (
         pd.read_excel(file_url, dtype=str, header=2, sheet_name=0)
@@ -84,8 +75,59 @@ def download_ippanmeishohou(year, file_url: str):
 
     # 突合
     df = df_all.merge(df_exception, how='left', on='一般名コード')
+    return df
+
+
+def download_ippanmeishohou(year: str, file_urls: list[str]):
+    """厚労省HPから、一般名処方マスタをダウンロードし、csv形式 (UTF-8) で保存する。
+
+    Args:
+        file_urls:
+    """
+    dfs = []
+    bs_checker = 0
+    max_update = '000000'
+
+    # (1) 一般名処方マスタ
+    pattern = re.compile(r"ippanmeishohoumaster_(\d{6}).xlsx")
+    file_url = file_urls[0]
+
+    # ファイル名の確認
+    mob = pattern.search(file_url)
+    if mob:
+        bs_checker += 1
+
+        # ファイルの読み込みと変換
+        df = read_transform(file_url)
+        dfs.append(df)
+
+        # 更新日の更新
+        max_update = max(max_update, mob.group(1))
+
+    # (2) 一般名処方マスタ削除リスト
+    pattern = re.compile(r"ippannmeishohou_sakujo_(\d{6}).xlsx")
+    file_url = file_urls[-1]
+
+    # ファイル名の確認
+    mob = pattern.search(file_url)
+    if mob:
+        bs_checker += 4
+
+        # ファイルの読み込み
+        if year == '2025':
+            df = pd.read_excel(file_url, dtype=str, header=1)
+        else:
+            df = pd.read_excel(file_url, dtype=str, header=2)
+        df['区分'] = '削除リスト'
+        dfs.append(df)
+
+    # (3) データフレームの連結
+    df = pd.concat(dfs)
 
     # バリデーション
+    assert bs_checker == 5, f"Unexpected bs_checker value: {bs_checker}"
+    assert set(df['区分'].unique()) == set(['内用薬', '外用薬', '削除リスト']), f"Unexpected 区分 values: {df['区分'].unique().tolist()}"
+
     if (DATA_DIR / 'mhlw_ippanmeishohou').is_dir():
         filepath = max(DATA_DIR.glob('mhlw_ippanmeishohou/*/*.csv'))
         df_prev = pd.read_csv(filepath, encoding='utf8')
@@ -94,7 +136,7 @@ def download_ippanmeishohou(year, file_url: str):
     assert (df['例外コード'].notna() == df['薬価基準収載医薬品コード_例外コード'].notna()).all()
 
     # csvの出力
-    filepath = DATA_DIR / f'mhlw_ippanmeishohou/{year}/20{mob.group(1)}.csv'
+    filepath = DATA_DIR / f'mhlw_ippanmeishohou/{year}/20{max_update}.csv'
     if not filepath.parent.is_dir():
         filepath.parent.mkdir(parents=True)
     df.to_csv(filepath, index=False, encoding='utf8')
