@@ -104,7 +104,23 @@ def download_ippanmeishohou(year: str, file_urls: list[str]):
         # 更新日の更新
         max_update = max(max_update, mob.group(1))
 
-    # (2) 一般名処方マスタ削除リスト
+    # (2) バイオ医薬品一般名処方マスタ
+    pattern = re.compile(r"ippannmeishohoumaster_bs_(\d{6})(\(\d{6}\))?.xlsx")
+    file_url = file_urls[1]
+
+    # ファイル名の確認
+    mob = pattern.search(file_url)
+    if mob:
+        bs_checker += 2
+
+        # ファイルの読み込みと変換
+        df = read_transform(file_url)
+        dfs.append(df)
+
+        # 更新日の更新
+        max_update = max(max_update, mob.group(1))
+
+    # (3) 一般名処方マスタ削除リスト
     pattern = re.compile(r"ippannmeishohou_sakujo_(\d{6}).xlsx")
     file_url = file_urls[-1]
 
@@ -121,12 +137,16 @@ def download_ippanmeishohou(year: str, file_urls: list[str]):
         df['区分'] = '削除リスト'
         dfs.append(df)
 
-    # (3) データフレームの連結
+    # (4) データフレームの連結
     df = pd.concat(dfs)
 
     # バリデーション
-    assert bs_checker == 5, f"Unexpected bs_checker value: {bs_checker}"
-    assert set(df['区分'].unique()) == set(['内用薬', '外用薬', '削除リスト']), f"Unexpected 区分 values: {df['区分'].unique().tolist()}"
+    if year == '2025':
+        assert bs_checker == 5, f"Unexpected bs_checker value: {bs_checker}"
+        assert set(df['区分'].unique()) == set(['内用薬', '外用薬', '削除リスト']), f"Unexpected 区分 values: {df['区分'].unique().tolist()}"
+    else:
+        assert bs_checker == 7, f"Unexpected bs_checker value: {bs_checker}"
+        assert set(df['区分'].unique()) == set(['内用薬', '注射薬', '外用薬', '削除リスト']), f"Unexpected 区分 values: {df['区分'].unique().tolist()}"
 
     if (DATA_DIR / 'mhlw_ippanmeishohou').is_dir():
         filepath = max(DATA_DIR.glob('mhlw_ippanmeishohou/*/*.csv'))
