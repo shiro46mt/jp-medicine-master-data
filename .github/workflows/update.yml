@@ -16,15 +16,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: main
           fetch-depth: 1
 
       - name: Set up Python 3.12
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
+          cache: 'pip'
 
       - name: Install dependencies
         run: |
@@ -40,20 +41,17 @@ jobs:
           today=`date "+%Y-%m-%d"`
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config core.quotepath false
+
           if (git diff --shortstat | grep '[0-9]'); then \
-            git add data; \
+            git add data --verbose; \
             git commit -m "${today}"; \
             git push origin main; \
           fi
 
-      - name: Check file existence
-        id: check_files
-        uses: andstor/file-existence-action@v3
-        with:
-          files: "errorlog.txt"
-
-      - name: On catch exceptions
-        if: steps.check_files.outputs.files_exists == 'true'
+      - name: Check for errors
         run: |
-          cat errorlog.txt
-          exit 1
+          if [ -f "errorlog.txt" ]; then
+            cat errorlog.txt
+            exit 1
+          fi
