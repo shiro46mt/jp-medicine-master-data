@@ -105,7 +105,7 @@ def download_ippanmeishohou(year: str, file_urls: list[str]):
         max_update = max(max_update, mob.group(1))
 
     # (2) バイオ医薬品一般名処方マスタ
-    pattern = re.compile(r"ippannmeishohoumaster_bs_(\d{6})(\(\d{6}\))?.xlsx")
+    pattern = re.compile(r"ippann?meishohoumaster_bs_(\d{6})(\(\d{6}\))?.xlsx")
     file_url = file_urls[1]
 
     # ファイル名の確認
